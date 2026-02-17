@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'qa_app/login_style.css' %}">
+    <link rel="icon" href="data:,">
+
+</head>
+
+<body>
+    <header>Create Account</header>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Get Started</h2>
+            <form class="auth-form" method="POST">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="error-container" style="color: #ff4d4d; font-size: 0.85rem; margin-bottom: 15px;">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <p><strong>{{ field.label }}:</strong> {{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <input type="text" name="username" placeholder="Choose Username" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="password" name="password1" placeholder="Create Password" required>
+                <input type="password" name="password2" placeholder="Confirm Password" required>
+                <!-- Using your Green color for the Register button -->
+                <button type="submit" class="auth-btn" style="background: #28a745;">Create Account</button>
+            </form>
+            <div class="auth-footer">
+                Already have an account? <a href="{% url 'login' %}">Login here</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

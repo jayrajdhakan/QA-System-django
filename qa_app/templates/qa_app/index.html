@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Support | 2026</title>
+    <link rel="stylesheet" href="{% static 'qa_app/index_style.css' %}">
+</head>
+<body>
+    <header>Live Support Q&A</header>
+    <div id="qa-log"></div>
+    <div class="controls">
+        <input id="qa-input" type="text" placeholder="Type your message here...">
+        <button id="qa-submit">Send</button>
+    </div>
+
+    <script>
+        // Setup WebSocket connection
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/qa/');
+
+        socket.onopen = () => {
+            console.log("Connected to support server.");
+            // Optional: Notify admin that user is active
+            socket.send(JSON.stringify({ "message": "User joined the chat" }));
+        };
+
+        socket.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            // Don't show the system "join" message in the UI
+            if (data.message && data.message !== "User joined the chat") {
+                // If the sender is Admin, it's a message from the bot or staff
+                // If sender matches display_name, it's from the user (ignored to prevent duplicates)
+                if (data.sender === 'Admin') {
+                    appendMsg(data.sender, data.message, data.options);
+                }
+            }
+        };
+
+        function appendMsg(sender, text, options = null) {
+            const log = document.getElementById('qa-log');
+            const div = document.createElement('div');
+            
+            // Determine styling
+            const isMe = (sender !== 'Admin');
+            div.className = `msg ${isMe ? 'msg-sent' : 'msg-received'}`;
+            
+            // Simple markdown-style formatting for bold and line breaks
+            let fmt = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            div.innerHTML = `<strong>${sender}:</strong><br>${fmt}`;
+            
+            // Render choice buttons if provided by the JSON tree
+            if (options && options.length > 0) {
+                const container = document.createElement('div');
+                container.className = 'opt-container';
+                
+                options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.innerText = opt.label; // Display text from JSON
+                    
+                    btn.onclick = () => {
+                        // Send the 'value' (next_node ID) back to consumers.py
+                        socket.send(JSON.stringify({ 
+                            "value": opt.value,
+                            "message": "Selected: " + opt.label 
+                        }));
+                        
+                        // Local update for instant feedback
+                        appendMsg('You', opt.label);
+                        
+                        // Remove buttons after selection
+                        container.remove();
+                    };
+                    container.appendChild(btn);
+                });
+                div.appendChild(container);
+            }
+            
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Handle text input submission
+        document.getElementById('qa-submit').onclick = () => {
+            const el = document.getElementById('qa-input');
+            if (el.value.trim()) {
+                socket.send(JSON.stringify({ 'message': el.value }));
+                appendMsg('You', el.value);
+                el.value = '';
+            }
+        };
+
+        // Allow 'Enter' key to send message
+        document.getElementById('qa-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('qa-submit').click();
+        });
+    </script>
+</body>
+</html>

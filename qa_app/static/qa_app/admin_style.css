@@ -1,0 +1,113 @@
+/* Base Layout */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 300px;
+    border-right: 1px solid #ddd;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 20px;
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+#user-list {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* User Item & Green Dot Logic */
+.user-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    position: relative;
+    /* Essential for positioning the dot */
+    transition: background 0.2s;
+}
+
+.user-item:hover {
+    background: #f1f1f1;
+}
+
+/* The Dot - Hidden by default */
+.unread-dot {
+    display: none !important;
+    width: 12px;
+    height: 12px;
+    background-color: #28a745;
+    border-radius: 50%;
+    position: absolute;
+    right: 15px;
+    top: 22px;
+    border: 2px solid white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Show the dot ONLY when user-item has the .has-unread class */
+.user-item.has-unread .unread-dot {
+    display: block !important;
+}
+
+.user-item.selected {
+    background-color: #e9ecef;
+    border-left: 5px solid #007bff;
+}
+
+/* Main Chat Area */
+.main-chat {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+}
+
+#admin-log {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+.reply-area {
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+    background: #f8f9fa;
+}
+
+#admin-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#send-btn {
+    padding: 10px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+#send-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
