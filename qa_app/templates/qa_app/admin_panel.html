@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | 2026</title>
+    <link rel="stylesheet" href="{% static 'qa_app/admin_style.css' %}">
+
+    <style>
+        .user-item {
+            position: relative !important;
+        }
+
+        .unread-dot {
+            display: none !important;
+            /* Hidden by default */
+            width: 12px;
+            height: 12px;
+            background-color: #28a745 !important;
+            /* Bright green */
+            border-radius: 50%;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            /* Centers vertically */
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        /* Force visibility when class is added */
+        .user-item.has-unread .unread-dot {
+            display: block !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">Conversations</div>
+        <div id="user-list">
+        </div>
+    </div>
+
+    <div class="main-chat">
+        <div id="admin-log">
+            <div style="text-align:center; color:#888; margin-top:50px;">Select a user from the sidebar to start
+                chatting.</div>
+        </div>
+
+        <div class="reply-area">
+            <input type="hidden" id="target-id">
+            <input type="text" id="admin-input" placeholder="Select a user..." disabled>
+            <button id="send-btn" onclick="sendReply()" disabled>Send</button>
+        </div>
+    </div>
+
+    <script>
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/qa/');
+        const chatStorage = {};
+
+        socket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+
+            if (data.user_id) {
+                // 1. Ensure user exists in sidebar
+                addUserToSidebar(data.user_id, data.sender);
+
+                const currentTarget = document.getElementById('target-id').value;
+
+                // 2. GREEN DOT LOGIC (The Fixed Part)
+                if (data.is_handoff === true) {
+                    // We use a slight timeout (10ms) to ensure the sidebar HTML is rendered
+                    setTimeout(() => {
+                        // Only show dot if we aren't currently looking at this user
+                        if (String(data.user_id) !== String(currentTarget)) {
+                            const tab = document.getElementById(`u-${data.user_id}`);
+                            if (tab) {
+                                tab.classList.add('has-unread');
+                                // Move flagged user to the very top
+                                document.getElementById('user-list').prepend(tab);
+                            }
+                        }
+                    }, 10);
+                }
+
+                // 3. GENERATE THE MESSAGE HTML
+                const html = createMsgHtml(data.sender, data.message, data.options);
+
+                // 4. STORE IN CACHE
+                chatStorage[data.user_id] = (chatStorage[data.user_id] || "") + html;
+
+                // 5. LIVE UPDATE THE CHAT LOG
+                if (String(data.user_id) === String(currentTarget)) {
+                    const log = document.getElementById('admin-log');
+
+                    if (log.innerHTML.includes("Select a user")) {
+                        log.innerHTML = "";
+                    }
+
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+                    log.appendChild(temp.firstElementChild);
+                    log.scrollTop = log.scrollHeight;
+                }
+            }
+        };
+
+        function addUserToSidebar(id, name) {
+            let userTab = document.getElementById(`u-${id}`);
+            if (userTab) return;
+
+            const div = document.createElement('div');
+            div.id = `u-${id}`;
+            div.className = 'user-item';
+            div.innerHTML = `
+            <strong>${name}</strong>
+            <span class="unread-dot"></span>
+            <br><small style="color:#777;">ID: ${id}</small>
+        `;
+
+            div.onclick = () => {
+                const targetInput = document.getElementById('target-id');
+                const adminInput = document.getElementById('admin-input');
+                const sendBtn = document.getElementById('send-btn');
+
+                targetInput.value = id;
+                adminInput.disabled = false;
+                sendBtn.disabled = false;
+                adminInput.placeholder = `Reply to ${name}...`;
+
+                document.querySelectorAll('.user-item').forEach(el => el.classList.remove('selected'));
+                div.classList.add('selected');
+                div.classList.remove('has-unread');
+
+                document.getElementById('admin-log').innerHTML = chatStorage[id] || "";
+                document.getElementById('admin-log').scrollTop = document.getElementById('admin-log').scrollHeight;
+            };
+
+            document.getElementById('user-list').prepend(div);
+        }
+
+        function createMsgHtml(sender, text, options = null) {
+            let fmt = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            const isFromAdmin = (sender === 'Admin');
+            const style = isFromAdmin ?
+                'background:#007bff; color:white; align-self:flex-end; margin-left:20%; border-radius:15px 15px 2px 15px;' :
+                'background:#e9ecef; color:black; align-self:flex-start; margin-right:20%; border-radius:15px 15px 15px 2px;';
+
+            return `
+            <div style="display:flex; flex-direction:column; margin-bottom:12px;">
+                <div style="padding:10px 15px; ${style}">
+                    <strong style="font-size:0.75em; display:block; opacity:0.8; margin-bottom:4px;">${sender}:</strong>
+                    <span style="line-height:1.4;">${fmt}</span>
+                </div>
+            </div>`;
+        }
+
+        function sendReply() {
+            const input = document.getElementById('admin-input');
+            const target = document.getElementById('target-id').value;
+
+            if (input.value.trim() && target) {
+                socket.send(JSON.stringify({
+                    "message": input.value,
+                    "target_user_id": target
+                }));
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        document.getElementById('admin-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendReply();
+        });
+    </script>
+</body>
+
+</html>

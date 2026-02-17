@@ -1,0 +1,56 @@
+{
+  "chatbot_name": "General Assistant",
+  "version": "1.0",
+  "start_node": "node_1",
+  "nodes": {
+    "node_1": {
+      "question": "Hello ! {name} How can I help you today?",
+      "options": [
+        { "text": "Product Inquiry", "next_node": "node_2" },
+        { "text": "Technical Support", "next_node": "node_3" },
+        { "text": "Talk to AI Agent", "next_node": "ai_agent_node" }
+      ]
+    },
+    "node_2": {
+      "question": "Which product are you interested in?",
+      "options": [
+        { "text": "Software Suite", "next_node": "node_4" },
+        { "text": "Hardware Tools", "next_node": "node_4" }
+      ]
+    },
+    "node_3": {
+      "question": "What seems to be the issue?",
+      "options": [
+        { "text": "Login Issues", "next_node": "node_5" },
+        { "text": "Billing", "next_node": "node_5" },
+        { "text": "Talk to AI Agent", "next_node": "ai_agent_node" }
+      ]
+    },
+    "node_4": {
+      "question": "Great choice! Would you like a demo or to talk to an agent?",
+      "options": [
+        { "text": "Request Demo", "next_node": "end_node" },
+        { "text": "Talk to AI Agent", "next_node": "ai_agent_node" }
+      ]
+    },
+    "node_5": {
+      "question": "I've logged your request. How would you like to proceed?",
+      "options": [
+        { "text": "Wait for Email", "next_node": "end_node" },
+        { "text": "Ask AI Agent now", "next_node": "ai_agent_node" }
+      ]
+    },
+    "ai_agent_node": {
+      "question": "Switching you to our AI Agent. Please type your question below.",
+      "type": "handoff",
+      "options": []
+    },
+    "end_node": {
+      "question": "Thank you! Your request has been submitted. Anything else?",
+      "options": [
+        { "text": "Start Over", "next_node": "node_1" },
+        { "text": "Exit", "next_node": null }
+      ]
+    }
+  }
+}
