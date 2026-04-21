@@ -1,4 +1,4 @@
-# 🧠 Automated Invoice Processing System
+# QA-System
 
 This is a Django-based Automated Invoice Processing System built using
 Python.
