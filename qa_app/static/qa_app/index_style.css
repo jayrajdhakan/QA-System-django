@@ -1,6 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+/* Custom Scrollbar for Webkit Browsers */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
+    font-family: 'Inter', sans-serif;
+    background: #f9fafb;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -8,119 +26,148 @@ body {
 }
 
 header {
-    background: #007bff;
-    color: white;
-    padding: 15px 20px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Replace background: #ffffff; with: */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    color: #111827;
+    padding: 18px 25px;
+    font-weight: 600;
+    font-size: 1.15rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    position: sticky; /* Keeps it locked to the top */
+    top: 0;
 }
 
 #qa-log {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
+    scroll-behavior: smooth;
 }
 
 .msg {
-    padding: 12px 16px;
+    padding: 14px 18px;
     border-radius: 18px;
     max-width: 75%;
     line-height: 1.5;
     font-size: 0.95rem;
     position: relative;
     word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .msg-received {
     background: #ffffff;
     align-self: flex-start;
-    border: 1px solid #dee2e6;
-    color: #333;
-    border-bottom-left-radius: 2px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f3f4f6;
+    color: #1f2937;
+    border-bottom-left-radius: 4px;
 }
 
 .msg-sent {
-    background: #007bff;
+    background: #4f46e5;
     color: white;
     align-self: flex-end;
-    border-bottom-right-radius: 2px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-bottom-right-radius: 4px;
 }
 
-.sender-name {
+.msg strong {
     display: block;
-    font-size: 0.75rem;
-    font-weight: bold;
-    margin-bottom: 4px;
-    color: #6c757d;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+    opacity: 0.8;
 }
 
-.msg-sent .sender-name {
-    color: rgba(255, 255, 255, 0.8);
-    text-align: right;
-}
-
+/* Options styling */
 .opt-container {
-    margin-top: 10px;
+    margin-top: 12px;
     display: flex;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
 .opt-btn {
-    background: #e7f3ff;
-    color: #007bff;
-    border: 1px solid #007bff;
-    padding: 6px 14px;
+    background: #ffffff;
+    color: #4f46e5;
+    border: 1px solid #e0e7ff;
+    padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 500;
     transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
 
 .opt-btn:hover {
-    background: #007bff;
-    color: white;
+    background: #e0e7ff;
+    border-color: #c7d2fe;
 }
 
+/* Input Area */
 .controls {
     background: white;
-    padding: 20px;
+    padding: 20px 25px;
     display: flex;
-    gap: 10px;
-    border-top: 1px solid #ddd;
+    gap: 12px;
+    border-top: 1px solid #f3f4f6;
 }
 
 input {
     flex: 1;
-    padding: 12px 20px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
+    padding: 14px 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 30px;
     outline: none;
-    transition: border-color 0.2s;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #f9fafb;
 }
 
 input:focus {
-    border-color: #007bff;
+    border-color: #4f46e5;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
 button#qa-submit {
-    padding: 10px 25px;
-    background: #28a745;
+    padding: 10px 28px;
+    background: #4f46e5;
     color: white;
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background 0.2s;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.1s;
 }
 
 button#qa-submit:hover {
-    background: #218838;
+    background: #4338ca;
+    transform: scale(1.02);
+}
+
+/* Animation Keyframes */
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Update your existing .msg class to include this animation */
+.msg {
+    /* Keep your existing .msg rules here, then add: */
+    animation: messageSlideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    will-change: transform, opacity;
 }
