@@ -145,15 +145,19 @@
         function createMsgHtml(sender, text, options = null) {
             let fmt = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             const isFromAdmin = (sender === 'Admin');
-            const style = isFromAdmin ?
-                'background:#007bff; color:white; align-self:flex-end; margin-left:20%; border-radius:15px 15px 2px 15px;' :
-                'background:#e9ecef; color:black; align-self:flex-start; margin-right:20%; border-radius:15px 15px 15px 2px;';
+            
+            // Updated Modern styles for inline messages
+            const style = isFromAdmin ? 
+                'background:#4f46e5; color:white; align-self:flex-end; border-radius:12px 12px 2px 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);' : 
+                'background:#f3f4f6; color:#111827; align-self:flex-start; border-radius:12px 12px 12px 2px; border: 1px solid #e5e7eb;';
+                
+        // Inside your createMsgHtml function...
 
             return `
-            <div style="display:flex; flex-direction:column; margin-bottom:12px;">
-                <div style="padding:10px 15px; ${style}">
-                    <strong style="font-size:0.75em; display:block; opacity:0.8; margin-bottom:4px;">${sender}:</strong>
-                    <span style="line-height:1.4;">${fmt}</span>
+            <div class="animated-msg" style="display:flex; flex-direction:column; margin-bottom:15px; max-width:70%; align-self: ${isFromAdmin ? 'flex-end' : 'flex-start'};">
+                <div style="padding:12px 16px; ${style}">
+                    <strong style="font-size:0.75em; display:block; opacity:0.8; margin-bottom:6px; letter-spacing: 0.5px;">${sender}</strong>
+                    <span style="line-height:1.5; font-size: 0.95rem;">${fmt}</span>
                 </div>
             </div>`;
         }

@@ -1,25 +1,47 @@
-/* Base Layout */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+/* Custom Scrollbar for Webkit Browsers */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
+
+
 body {
-    font-family: sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0;
     display: flex;
     height: 100vh;
+    background: #f9fafb;
 }
 
+/* Sidebar with Dark Theme for contrast */
 .sidebar {
-    width: 300px;
-    border-right: 1px solid #ddd;
-    background: #f8f9fa;
+    width: 320px;
+    background: #111827;
+    color: #f3f4f6;
     display: flex;
     flex-direction: column;
+    border-right: 1px solid #1f2937;
 }
 
 .sidebar-header {
-    padding: 20px;
-    background: #007bff;
+    padding: 25px 20px;
+    background: #1f2937;
     color: white;
-    font-weight: bold;
-    font-size: 1.2em;
+    font-weight: 600;
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
 }
 
 #user-list {
@@ -27,42 +49,51 @@ body {
     overflow-y: auto;
 }
 
-/* User Item & Green Dot Logic */
+/* User Tab Styling */
 .user-item {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+    padding: 18px 20px;
+    border-bottom: 1px solid #1f2937;
     cursor: pointer;
     position: relative;
-    /* Essential for positioning the dot */
-    transition: background 0.2s;
+    transition: background 0.2s ease;
 }
 
 .user-item:hover {
-    background: #f1f1f1;
+    background: #1f2937;
 }
 
-/* The Dot - Hidden by default */
+.user-item strong {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.user-item small {
+    display: inline-block;
+    margin-top: 6px;
+    opacity: 0.6;
+}
+
+/* Unread Dot */
 .unread-dot {
     display: none !important;
-    width: 12px;
-    height: 12px;
-    background-color: #28a745;
+    width: 10px;
+    height: 10px;
+    background-color: #10b981; /* Emerald Green */
     border-radius: 50%;
     position: absolute;
-    right: 15px;
-    top: 22px;
-    border: 2px solid white;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
 }
 
-/* Show the dot ONLY when user-item has the .has-unread class */
 .user-item.has-unread .unread-dot {
     display: block !important;
 }
 
 .user-item.selected {
-    background-color: #e9ecef;
-    border-left: 5px solid #007bff;
+    background-color: #1f2937;
+    border-left: 4px solid #4f46e5; /* Indigo accent */
 }
 
 /* Main Chat Area */
@@ -70,44 +101,83 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    background: white;
+    background: #ffffff;
 }
 
 #admin-log {
     flex-grow: 1;
-    padding: 20px;
+    padding: 30px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background: #fff;
 }
 
+/* Reply Area */
 .reply-area {
-    padding: 20px;
-    border-top: 1px solid #ddd;
+    padding: 20px 30px;
+    border-top: 1px solid #f3f4f6;
     display: flex;
-    gap: 10px;
-    background: #f8f9fa;
+    gap: 15px;
+    background: #ffffff;
 }
 
 #admin-input {
     flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 14px 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    background: #f9fafb;
+    transition: all 0.2s;
+}
+
+#admin-input:focus {
+    border-color: #4f46e5;
+    background: #ffffff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
 #send-btn {
-    padding: 10px 20px;
-    background: #28a745;
+    padding: 14px 28px;
+    background: #4f46e5;
     color: white;
     border: none;
-    font-weight: bold;
-    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
     cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Example for your Admin Send Button */
+#send-btn:hover:not(:disabled) {
+    background: #4338ca;
+    transform: translateY(-2px);
+    /* Add a glowing shadow matching the button color */
+    box-shadow: 0 6px 12px -2px rgba(79, 70, 229, 0.3), 0 3px 6px -3px rgba(79, 70, 229, 0.2);
 }
 
 #send-btn:disabled {
-    background: #ccc;
+    background: #d1d5db;
     cursor: not-allowed;
+    color: #9ca3af;
+}
+
+/* Message Entrance Animation for Admin Panel */
+@keyframes adminMessageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated-msg {
+    animation: adminMessageSlideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    will-change: transform, opacity;
 }
