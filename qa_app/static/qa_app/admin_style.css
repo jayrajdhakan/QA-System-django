@@ -1,47 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-/* Custom Scrollbar for Webkit Browsers */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: transparent; 
-}
-::-webkit-scrollbar-thumb {
-    background: #cbd5e1; 
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8; 
+:root {
+    --sidebar-bg: #0f172a;
+    --sidebar-hover: #1e293b;
+    --sidebar-border: #334155;
+    --chat-bg: #f8fafc;
+    --primary: #4f46e5;
+    --surface: #ffffff;
+    --border: #e2e8f0;
 }
 
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     display: flex;
     height: 100vh;
-    background: #f9fafb;
+    background: var(--chat-bg);
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Sidebar with Dark Theme for contrast */
 .sidebar {
     width: 320px;
-    background: #111827;
-    color: #f3f4f6;
+    background: var(--sidebar-bg);
+    color: #f8fafc;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #1f2937;
+    border-right: 1px solid var(--sidebar-border);
+    transition: transform 0.3s ease;
 }
 
 .sidebar-header {
-    padding: 25px 20px;
-    background: #1f2937;
+    padding: 24px 20px;
+    background: rgba(15, 23, 42, 0.95);
     color: white;
     font-weight: 600;
-    font-size: 1.1em;
-    letter-spacing: 0.5px;
+    font-size: 1.1rem;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid var(--sidebar-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 #user-list {
@@ -49,59 +52,66 @@ body {
     overflow-y: auto;
 }
 
-/* User Tab Styling */
 .user-item {
-    padding: 18px 20px;
-    border-bottom: 1px solid #1f2937;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--sidebar-border);
     cursor: pointer;
     position: relative;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .user-item:hover {
-    background: #1f2937;
+    background: var(--sidebar-hover);
 }
 
 .user-item strong {
     font-size: 0.95rem;
     font-weight: 500;
+    display: block;
 }
 
 .user-item small {
     display: inline-block;
-    margin-top: 6px;
-    opacity: 0.6;
+    margin-top: 4px;
+    opacity: 0.5;
+    font-size: 0.75rem;
 }
 
-/* Unread Dot */
 .unread-dot {
     display: none !important;
     width: 10px;
     height: 10px;
-    background-color: #10b981; /* Emerald Green */
+    background-color: #10b981;
     border-radius: 50%;
     position: absolute;
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
 
 .user-item.has-unread .unread-dot {
     display: block !important;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
 .user-item.selected {
-    background-color: #1f2937;
-    border-left: 4px solid #4f46e5; /* Indigo accent */
+    background-color: var(--sidebar-hover);
+    border-left: 4px solid var(--primary);
 }
 
-/* Main Chat Area */
 .main-chat {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: var(--surface);
+    position: relative;
 }
 
 #admin-log {
@@ -110,74 +120,72 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    background: var(--chat-bg);
 }
 
-/* Reply Area */
 .reply-area {
     padding: 20px 30px;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--border);
     display: flex;
-    gap: 15px;
-    background: #ffffff;
+    gap: 12px;
+    background: var(--surface);
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
 #admin-input {
     flex-grow: 1;
     padding: 14px 20px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    background: #f9fafb;
+    font-size: 0.95rem;
+    background: #f8fafc;
     transition: all 0.2s;
 }
 
 #admin-input:focus {
-    border-color: #4f46e5;
-    background: #ffffff;
+    border-color: var(--primary);
+    background: var(--surface);
     outline: none;
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
 #send-btn {
     padding: 14px 28px;
-    background: #4f46e5;
+    background: var(--primary);
     color: white;
     border: none;
     font-weight: 600;
-    font-size: 1rem;
-    border-radius: 8px;
+    font-size: 0.95rem;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-/* Example for your Admin Send Button */
 #send-btn:hover:not(:disabled) {
     background: #4338ca;
     transform: translateY(-2px);
-    /* Add a glowing shadow matching the button color */
-    box-shadow: 0 6px 12px -2px rgba(79, 70, 229, 0.3), 0 3px 6px -3px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 6px 12px -2px rgba(79, 70, 229, 0.3);
 }
 
 #send-btn:disabled {
-    background: #d1d5db;
+    background: #cbd5e1;
     cursor: not-allowed;
-    color: #9ca3af;
+    color: #f8fafc;
 }
 
-/* Message Entrance Animation for Admin Panel */
 @keyframes adminMessageSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(15px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .animated-msg {
-    animation: adminMessageSlideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: adminMessageSlideIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     will-change: transform, opacity;
+}
+
+/* Responsive constraints for handheld devices */
+@media (max-width: 768px) {
+    .sidebar { width: 260px; }
+    .reply-area { padding: 15px; }
 }

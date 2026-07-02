@@ -1,23 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+:root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-gradient: linear-gradient(135deg, #f3f4f6 0%, #e0e7ff 100%);
+    --surface: #ffffff;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+}
+
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    background: var(--bg-gradient);
     margin: 0;
     display: flex;
     flex-direction: column;
     height: 100vh;
-    color: #1f2937;
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
 }
 
 header {
-    background: #ffffff;
-    color: #111827;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text-main);
     padding: 20px 30px;
     font-weight: 700;
     font-size: 1.25rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     text-align: center;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .auth-container {
@@ -29,81 +43,88 @@ header {
 }
 
 .auth-card {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    background: var(--surface);
+    padding: 45px 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
     width: 100%;
-    max-width: 420px;
+    max-width: 400px;
     text-align: center;
-    border: 1px solid #f3f4f6;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .auth-card h2 {
     margin-top: 0;
-    margin-bottom: 30px;
-    color: #111827;
-    font-weight: 600;
+    margin-bottom: 35px;
+    color: var(--text-main);
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
 
 .auth-form input {
     width: 100%;
     box-sizing: border-box;
-    padding: 14px 16px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 1rem;
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 0.95rem;
     font-family: 'Inter', sans-serif;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
     background: #f9fafb;
 }
 
 .auth-form input:focus {
-    border-color: #4f46e5;
-    background: #ffffff;
+    border-color: var(--primary);
+    background: var(--surface);
     outline: none;
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
 }
 
 .auth-btn {
     padding: 14px;
-    background: #4f46e5;
+    background: var(--primary);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     font-size: 1rem;
-    transition: all 0.2s ease;
-    margin-top: 10px;
+    transition: all 0.25s ease;
+    margin-top: 15px;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
 }
 
 .auth-btn:hover {
-    background: #4338ca;
-    /* Increases the lift effect from -1px to -2px */
-    transform: translateY(-2px); 
-    /* Adds a dual-layered colored glow instead of a standard shadow */
-    box-shadow: 0 6px 12px -2px rgba(79, 70, 229, 0.4), 0 3px 6px -3px rgba(79, 70, 229, 0.3);
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px -3px rgba(79, 70, 229, 0.35);
 }
 
 .auth-footer {
-    margin-top: 25px;
+    margin-top: 30px;
     font-size: 0.9rem;
-    color: #6b7280;
+    color: var(--text-muted);
 }
 
 .auth-footer a {
-    color: #4f46e5;
+    color: var(--primary);
     text-decoration: none;
     font-weight: 600;
+    transition: color 0.2s;
 }
 
 .auth-footer a:hover {
-    text-decoration: underline;
+    color: var(--primary-hover);
 }
