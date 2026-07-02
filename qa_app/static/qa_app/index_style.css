@@ -1,44 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-/* Custom Scrollbar for Webkit Browsers */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+:root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-color: #f8fafc;
+    --surface: #ffffff;
+    --text-main: #1e293b;
+    --border: #e2e8f0;
 }
-::-webkit-scrollbar-track {
-    background: transparent; 
-}
-::-webkit-scrollbar-thumb {
-    background: #cbd5e1; 
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8; 
-}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #f9fafb;
+    background: var(--bg-color);
     margin: 0;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
 }
 
 header {
-    /* Replace background: #ffffff; with: */
     background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    
-    color: #111827;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text-main);
     padding: 18px 25px;
     font-weight: 600;
     font-size: 1.15rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     z-index: 10;
-    position: sticky; /* Keeps it locked to the top */
+    position: sticky;
     top: 0;
+    border-bottom: 1px solid var(--border);
 }
 
 #qa-log {
@@ -47,56 +45,61 @@ header {
     padding: 25px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 20px;
     scroll-behavior: smooth;
 }
 
 .msg {
-    padding: 14px 18px;
+    padding: 14px 20px;
     border-radius: 18px;
-    max-width: 75%;
-    line-height: 1.5;
+    max-width: 80%;
+    line-height: 1.55;
     font-size: 0.95rem;
     position: relative;
     word-wrap: break-word;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    animation: messageSlideIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    will-change: transform, opacity;
 }
 
 .msg-received {
-    background: #ffffff;
+    background: var(--surface);
     align-self: flex-start;
-    border: 1px solid #f3f4f6;
-    color: #1f2937;
+    border: 1px solid var(--border);
+    color: var(--text-main);
     border-bottom-left-radius: 4px;
 }
 
 .msg-sent {
-    background: #4f46e5;
+    background: var(--primary);
     color: white;
     align-self: flex-end;
     border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
 }
 
 .msg strong {
     display: block;
-    font-size: 0.8rem;
-    margin-bottom: 6px;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
     opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* Options styling */
 .opt-container {
-    margin-top: 12px;
+    margin-top: 14px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    animation: fadeIn 0.4s ease-out forwards;
 }
 
 .opt-btn {
-    background: #ffffff;
-    color: #4f46e5;
-    border: 1px solid #e0e7ff;
-    padding: 8px 16px;
+    background: var(--surface);
+    color: var(--primary);
+    border: 1px solid #c7d2fe;
+    padding: 10px 18px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 0.85rem;
@@ -107,67 +110,60 @@ header {
 
 .opt-btn:hover {
     background: #e0e7ff;
-    border-color: #c7d2fe;
+    border-color: #a5b4fc;
+    transform: translateY(-1px);
 }
 
-/* Input Area */
 .controls {
-    background: white;
+    background: var(--surface);
     padding: 20px 25px;
     display: flex;
     gap: 12px;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.02);
 }
 
 input {
     flex: 1;
-    padding: 14px 20px;
-    border: 1px solid #e5e7eb;
+    padding: 14px 22px;
+    border: 1px solid var(--border);
     border-radius: 30px;
     outline: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background: #f9fafb;
+    transition: all 0.2s ease;
+    background: var(--bg-color);
 }
 
 input:focus {
-    border-color: #4f46e5;
-    background: #ffffff;
+    border-color: var(--primary);
+    background: var(--surface);
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
 button#qa-submit {
     padding: 10px 28px;
-    background: #4f46e5;
+    background: var(--primary);
     color: white;
     border: none;
     border-radius: 30px;
     cursor: pointer;
     font-weight: 600;
-    transition: background 0.2s, transform 0.1s;
+    transition: all 0.2s ease;
 }
 
 button#qa-submit:hover {
-    background: #4338ca;
-    transform: scale(1.02);
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px -2px rgba(79, 70, 229, 0.3);
 }
 
-/* Animation Keyframes */
 @keyframes messageSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(15px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Update your existing .msg class to include this animation */
-.msg {
-    /* Keep your existing .msg rules here, then add: */
-    animation: messageSlideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-    will-change: transform, opacity;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
