@@ -1,5 +1,6 @@
-db.sqlite3
+
 env
 qa_app/__pycache__
 qa_app/migrations/__pycache__
 qa_project/__pycache__
+db.sqlite3
